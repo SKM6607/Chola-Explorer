@@ -22,9 +22,11 @@ public class TilesUtility {
         String tilesPath = "src/res/tiles/" + tileType.tileName + ".png";
         tile[tileType.tileNumber] = new Tile(tilesPath);
     }
-    
-    private static Point linearDraw(BufferedImage image, Graphics2D g, int startX, int startY, int numberOfRows, int numberOfColumns) {
-        if (startX < 0 || startY < 0 || numberOfColumns < 0 || numberOfRows < 0 || g == null) {
+
+    private static Point linearDraw(BufferedImage image, Graphics2D g, int row, int column, int numberOfRows, int numberOfColumns) {
+        int startX = column * TILE_SIZE;
+        int startY = row * TILE_SIZE;
+        if (row < 0 || column < 0 || numberOfColumns < 0 || numberOfRows < 0 || g == null) {
             return null;
         }
         for (int i = 0, y = startY; i < numberOfRows; i++) {
@@ -37,27 +39,27 @@ public class TilesUtility {
         return new Point(startX + numberOfColumns * TILE_SIZE, startY + numberOfRows * TILE_SIZE);
     }
 
-    public static Point drawGrassBlocks(Graphics2D g, int startX, int startY, int numberOfRows, int numberOfColumns) {
-        return linearDraw(tile[TileType.GRASS.tileNumber].image, g, startX, startY, numberOfRows, numberOfColumns);
+    public static Point drawGrassBlocks(Graphics2D g, int row, int column, int numberOfRows, int numberOfColumns) {
+        return linearDraw(tile[TileType.GRASS.tileNumber].image, g, row, column, numberOfRows, numberOfColumns);
     }
 
-    public static Point drawWaterBlocks(Graphics2D g, int startX, int startY, int numberOfRows, int numberOfColumns) {
-        return linearDraw(tile[TileType.WATER.tileNumber].image, g, startX, startY, numberOfRows, numberOfColumns);
+    public static Point drawWaterBlocks(Graphics2D g, int row, int column, int numberOfRows, int numberOfColumns) {
+        return linearDraw(tile[TileType.WATER.tileNumber].image, g, row, column, numberOfRows, numberOfColumns);
     }
 
-    public static Point drawTreeBlocks(Graphics2D g, int startX, int startY, int numberOfRows, int numberOfColumns) {
-        return linearDraw(tile[TileType.TREE.tileNumber].image, g, startX, startY, numberOfRows, numberOfColumns);
+    public static Point drawTreeBlocks(Graphics2D g, int row, int column, int numberOfRows, int numberOfColumns) {
+        return linearDraw(tile[TileType.TREE.tileNumber].image, g, row, column, numberOfRows, numberOfColumns);
     }
 
-    public static Point drawSandBlocks(Graphics2D g, int startX, int startY, int numberOfRows, int numberOfColumns) {
-        return linearDraw(tile[TileType.SAND.tileNumber].image, g, startX, startY, numberOfRows, numberOfColumns);
+    public static Point drawSandBlocks(Graphics2D g, int row, int column, int numberOfRows, int numberOfColumns) {
+        return linearDraw(tile[TileType.SAND.tileNumber].image, g, row, column, numberOfRows, numberOfColumns);
     }
 
-    public static Point drawWallBlocks(Graphics2D g, int startX, int startY, int numberOfRows, int numberOfColumns) {
-        return linearDraw(tile[TileType.WALL.tileNumber].image, g, startX, startY, numberOfRows, numberOfColumns);
+    public static Point drawWallBlocks(Graphics2D g, int row, int column, int numberOfRows, int numberOfColumns) {
+        return linearDraw(tile[TileType.WALL.tileNumber].image, g, row, column, numberOfRows, numberOfColumns);
     }
 
-    public static Point drawEarthBlocks(Graphics2D g, int startX, int startY, int numberOfRows, int numberOfColumns) {
-        return linearDraw(tile[TileType.EARTH.tileNumber].image, g, startX, startY, numberOfRows, numberOfColumns);
+    public static Point drawEarthBlocks(Graphics2D g, int row, int column, int numberOfRows, int numberOfColumns) {
+        return linearDraw(tile[TileType.EARTH.tileNumber].image, g, row, column, numberOfRows, numberOfColumns);
     }
 }
