@@ -11,25 +11,21 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 import static collision.CollisionManager.isColliding;
 import static collision.CollisionManager.reAlign;
 
 public class Player extends Entity implements Drawable {
-    private final int screenWidth, screenHeight;
-    private final Rectangle screen;
     GamePanel gamePanel;
     KeyInputHandler keyInputHandler;
     private ArrayList<Rectangle> collisionRectanglesM1 = null;
     private ArrayList<Rectangle> collisionRectanglesM2 = null;
-    private int PLAYER_MOTION = 20;
-
+    private int currentMapThePlayerIsIn=0;
     public Player(GamePanel gamePanel, KeyInputHandler keyInputHandler) {
         this.gamePanel = gamePanel;
         this.keyInputHandler = keyInputHandler;
-        this.screenWidth = this.gamePanel.maximumColumns * gamePanel.tileSize;
-        this.screenHeight = this.gamePanel.maximumRows * gamePanel.tileSize;
-        screen = new Rectangle(0, 0, screenWidth, screenHeight);
         setDefaultFields();
     }
 
@@ -40,14 +36,20 @@ public class Player extends Entity implements Drawable {
         getPlayerImage();
     }
 
-    public void checkCollisionByMap(ArrayList<Rectangle> collision) {
-        if (collision != null && isColliding(this, collision)) {
-            reAlign(this, collision);
+    public void checkCollisionByMap(Collection<ArrayList<Rectangle>> collisions) {
+        int mover=0;
+        for (ArrayList<Rectangle> collision : collisions) {
+            if (mover==currentMapThePlayerIsIn && collision != null && isColliding(this, collision)) {
+                reAlign(this, collision);
+            }
+            mover++;
         }
     }
-
+    public void updateMapForPlayer(int mapN){
+        currentMapThePlayerIsIn=mapN;
+    }
     public void update() {
-
+        checkCollisionByMap(Arrays.asList(collisionRectanglesM2, collisionRectanglesM1));
         if (keyInputHandler.upPressed || keyInputHandler.downPressed || keyInputHandler.rightPressed || keyInputHandler.leftPressed) {
             if (keyInputHandler.upPressed) {
                 direction = Direction.UP;
@@ -63,6 +65,7 @@ public class Player extends Entity implements Drawable {
                 x -= speed;
             }
             spriteCounter++;
+            int PLAYER_MOTION = 20;
             if (spriteCounter > PLAYER_MOTION) {
                 spriteNum = 1 - spriteNum;
                 spriteCounter = 0;
@@ -82,7 +85,7 @@ public class Player extends Entity implements Drawable {
             case LEFT -> image = left[spriteNum];
             case RIGHT -> image = right[spriteNum];
         }
-        g.drawImage(image, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
+        g.drawImage(image, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
     }
 
     private void getPlayerImage() {

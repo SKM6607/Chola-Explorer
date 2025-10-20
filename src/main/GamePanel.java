@@ -1,6 +1,8 @@
 package main;
 
+import com.sun.jdi.PrimitiveValue;
 import entitity.Player;
+import enums.GameState;
 import tile.MapsManager;
 
 import javax.swing.*;
@@ -16,6 +18,7 @@ public class GamePanel extends JPanel implements Runnable {
     public static final int screenWidth = tileSize * maximumColumns;
     public static final int screenHeight = tileSize * maximumRows;
     private final KeyInputHandler keyInputHandler = new KeyInputHandler();
+    private GameState gameState=GameState.PLAYING;
     private Thread gameThread = null;
     Player player=new Player(this,keyInputHandler);
     MapsManager mapsManager =new MapsManager(this);
@@ -36,7 +39,11 @@ public class GamePanel extends JPanel implements Runnable {
     @Override
     public void run() {
         while (gameThread != null) {
-            player.update();
+            switch (gameState) {
+                case PLAYING -> player.update();
+                case TRANSITION -> {}//TODO IMPLEMENT ANIMATION
+            }
+            player.updateMapForPlayer(mapsManager.mapSwap(player));
             repaint();
             sleep(90);
         }
@@ -56,7 +63,6 @@ public class GamePanel extends JPanel implements Runnable {
     protected void paintComponent( Graphics g1) {
         super.paintComponent(g1);
         Graphics2D g=(Graphics2D)g1;
-        mapsManager.mapSwap(player);
         mapsManager.draw(g);
         player.draw(g);
     }

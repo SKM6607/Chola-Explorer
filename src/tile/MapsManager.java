@@ -10,7 +10,7 @@ import static maps.Maps.drawMap0;
 import static maps.Maps.drawMap1;
 
 public final class MapsManager implements Drawable {
-    public int mapN = 1;
+    int mapNumber = 1;
     GamePanel gamePanel;
 
     public MapsManager(GamePanel gamePanel) {
@@ -24,21 +24,32 @@ public final class MapsManager implements Drawable {
     @Override
     public void draw(Graphics2D g) {
         clrScreen(g);
-        switch (mapN) {
+        switch (mapNumber) {
             case 0 -> drawMap0(g);
             default -> drawMap1(g);
         }
     }
 
-    public void mapSwap(Player player) {
-        if (player.x < 0 || player.y < 0 || player.x > GamePanel.screenWidth || player.y > GamePanel.screenHeight) {
-            mapN = 1 - mapN;
-            player.x = 100;
+    public int mapSwap(Player player) {
+        if (mapNumber == 1) {
+            if (player.x < 0 || player.y > GamePanel.screenHeight) {
+                mapNumber = 0;
+                player.x = GamePanel.screenWidth - 100;
+                player.y = GamePanel.screenHeight / 4;
+            }
         }
+        if (mapNumber == 0) {
+            if (player.x > GamePanel.screenWidth) {
+                mapNumber = 1;
+                player.x = 100;
+                player.y = GamePanel.screenHeight / 4;
+            }
+        }
+        return mapNumber;
     }
+
     public void clrScreen(Graphics2D g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, GamePanel.screenWidth, GamePanel.screenHeight);
-        g.dispose();
     }
 }
