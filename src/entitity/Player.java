@@ -1,9 +1,10 @@
 package entitity;
+
 import interfaces.Drawable;
 import main.GamePanel;
 import main.KeyInputHandler;
 import maps.Maps;
-import static collision.CollisionManager.*;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -11,12 +12,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static collision.CollisionManager.isColliding;
+import static collision.CollisionManager.reAlign;
+
 public class Player extends Entity implements Drawable {
     private final int screenWidth, screenHeight;
     private final Rectangle screen;
     GamePanel gamePanel;
     KeyInputHandler keyInputHandler;
-    ArrayList<Rectangle> collisionMap1 = null;
+    private ArrayList<Rectangle> collisionRectanglesM1 = null;
+    private ArrayList<Rectangle> collisionRectanglesM2 = null;
     private int PLAYER_MOTION = 20;
 
     public Player(GamePanel gamePanel, KeyInputHandler keyInputHandler) {
@@ -28,10 +33,6 @@ public class Player extends Entity implements Drawable {
         setDefaultFields();
     }
 
-    private boolean stopPlayerOutOfBounds(Rectangle rectangle) {
-        return x > rectangle.width || x < rectangle.x || y > rectangle.height || y < rectangle.y;
-    }
-
     public void setDefaultFields() {
         x = 100;
         y = 100;
@@ -39,10 +40,14 @@ public class Player extends Entity implements Drawable {
         getPlayerImage();
     }
 
-    public void update() {
-        if (collisionMap1 != null && isColliding(this, collisionMap1)){
-            reAlign(this,collisionMap1);
+    public void checkCollisionByMap(ArrayList<Rectangle> collision) {
+        if (collision != null && isColliding(this, collision)) {
+            reAlign(this, collision);
         }
+    }
+
+    public void update() {
+
         if (keyInputHandler.upPressed || keyInputHandler.downPressed || keyInputHandler.rightPressed || keyInputHandler.leftPressed) {
             if (keyInputHandler.upPressed) {
                 direction = Direction.UP;
@@ -67,7 +72,10 @@ public class Player extends Entity implements Drawable {
 
     public void draw(Graphics2D g) {
         BufferedImage image = null;
-        collisionMap1 = Maps.getCollisionAreaMap1();
+        if (collisionRectanglesM1 == null || collisionRectanglesM2 == null) {
+            collisionRectanglesM1 = Maps.getCollisionAreaMap1();
+            collisionRectanglesM2 = Maps.getCollisionAreaMap2();
+        }
         switch (direction) {
             case UP -> image = up[spriteNum];
             case DOWN -> image = down[spriteNum];

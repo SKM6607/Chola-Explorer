@@ -10,8 +10,7 @@ public class Maps {
     private static final int MAX_ROWS = 36 / 3;
     private static final int MAX_COLUMNS = 48 / 3;
     private static final ArrayList<Rectangle> collisionAreaMap1 = new ArrayList<>();
-    static boolean printOnce = true;
-
+    private static final ArrayList<Rectangle> collisionAreaMap2=new ArrayList<>();
     public static void drawMap1(Graphics2D g) {
         final int OPENING = 5;
         collisionAreaMap1.clear();
@@ -37,19 +36,18 @@ public class Maps {
         drawGrassBlocks(g, 6, 10, 6, 3);
         drawGrassBlocks(g, 8, 8, 4, 2);
     }
-
     public static ArrayList<Rectangle> getCollisionAreaMap1() {
         return collisionAreaMap1;
     }
-
     public static void drawMap0(Graphics2D g) {
         //MAP BOUNDARY
+        collisionAreaMap2.clear();
         {
-            drawWallBlocks(g, 0, 0, MAX_ROWS, 1);
-            drawWallBlocks(g, 0, 0, 1, MAX_COLUMNS);
-            drawWallBlocks(g, MAX_ROWS - 1, 1, 1, MAX_COLUMNS - 1);
-            drawWallBlocks(g, 1, MAX_COLUMNS - 1, 3, 1);
-            drawWallBlocks(g, 7, MAX_COLUMNS - 1, MAX_ROWS - 8, 1);
+            collisionAreaMap2.add(drawWallBlocks(g, 0, 0, MAX_ROWS, 1));
+            collisionAreaMap2.add(drawWallBlocks(g, 0, 0, 1, MAX_COLUMNS));
+            collisionAreaMap2.add(drawWallBlocks(g, MAX_ROWS - 1, 1, 1, MAX_COLUMNS - 1));
+            collisionAreaMap2.add(drawWallBlocks(g, 1, MAX_COLUMNS - 1, 3, 1));
+            collisionAreaMap2.add(drawWallBlocks(g, 7, MAX_COLUMNS - 1, MAX_ROWS - 8, 1));
         }
         drawEarthBlocks(g,1,MAX_COLUMNS/2 ,MAX_ROWS-2,1);
         drawEarthBlocks(g,MAX_ROWS/2 -1,1,1,MAX_COLUMNS-1);
@@ -60,5 +58,8 @@ public class Maps {
         drawEarthBlocks(g,MAX_ROWS/2-2,MAX_COLUMNS/2-1,3,3);
         drawSingleGrassBlock(g,MAX_ROWS/2-2,MAX_COLUMNS-1);
         drawSingleGrassBlock(g,MAX_ROWS/2,MAX_COLUMNS-1);
+    }
+    public static ArrayList<Rectangle> getCollisionAreaMap2(){
+        return collisionAreaMap2;
     }
 }
