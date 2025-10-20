@@ -2,6 +2,8 @@ package tile;
 import interfaces.Drawable;
 import main.GamePanel;
 import java.awt.*;
+import java.util.ArrayList;
+
 import static maps.Maps.*;
 
 public class TileManager implements Drawable {
@@ -17,6 +19,7 @@ public class TileManager implements Drawable {
 
     @Override
     public void draw(Graphics2D g) {
-        drawL1Map(g);
+        drawMap1(g);
     }
+
 }
