@@ -1,7 +1,7 @@
 package main;
 
 import entitity.Player;
-import tile.TileManager;
+import tile.MapsManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +18,7 @@ public class GamePanel extends JPanel implements Runnable {
     private final KeyInputHandler keyInputHandler = new KeyInputHandler();
     private Thread gameThread = null;
     Player player=new Player(this,keyInputHandler);
-    TileManager tileManager=new TileManager(this);
+    MapsManager mapsManager =new MapsManager(this);
     public GamePanel() {
         setPreferredSize(new Dimension(screenWidth, screenHeight));
         setBackground(Color.BLACK);
@@ -53,10 +53,11 @@ public class GamePanel extends JPanel implements Runnable {
 
 
     @Override
-    protected void paintComponent(Graphics g1) {
+
+    protected void paintComponent( Graphics g1) {
         super.paintComponent(g1);
         Graphics2D g=(Graphics2D)g1;
-        tileManager.draw(g);
+        mapsManager.draw(g);
         player.draw(g);
     }
 }
