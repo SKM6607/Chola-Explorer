@@ -2,9 +2,9 @@ package entitity;
 
 import java.awt.image.BufferedImage;
 
-public class Entity {
+public sealed class Entity permits Player {
     public int x,y;
-    int speed;
+    public int speed;
     public BufferedImage[] up=new BufferedImage[2];
     public BufferedImage[] down=new BufferedImage[2];
     public BufferedImage[] left=new BufferedImage[2];

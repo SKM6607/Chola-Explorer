@@ -1,6 +1,8 @@
 package tile;
 
+import entitity.Entity;
 import entitity.Player;
+import enums.GameState;
 import interfaces.Drawable;
 import main.GamePanel;
 import transtitions.MapTransition;
@@ -35,14 +37,17 @@ public final class MapsManager implements Drawable {
     public int mapSwap(Player player) {
         if (mapNumber == 1) {
             if (player.x < 0 || player.y > GamePanel.screenHeight) {
+                gamePanel.gameState= GameState.TRANSITION;
                 SceneManager.switchTo(new MapTransition(gamePanel));
                 mapNumber = 0;
+
                 player.x = GamePanel.screenWidth - 100;
                 player.y = GamePanel.screenHeight / 4;
             }
         }
         if (mapNumber == 0) {
             if (player.x > GamePanel.screenWidth) {
+                gamePanel.gameState= GameState.TRANSITION;
                 SceneManager.switchTo(new MapTransition(gamePanel));
                 mapNumber = 1;
                 player.x = 100;

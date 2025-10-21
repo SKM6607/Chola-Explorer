@@ -8,7 +8,6 @@ public class Main {
         JFrame gameWindow=new JFrame("Chola Explorer- THE GAME");
         GamePanel gamePanel=new GamePanel();
         SceneManager.init(gameWindow);
-        SceneManager.switchTo(gamePanel);
         gameWindow.add(gamePanel);
         gameWindow.pack();
         gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

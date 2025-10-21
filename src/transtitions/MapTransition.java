@@ -1,7 +1,7 @@
 package transtitions;
 
+import enums.GameState;
 import main.GamePanel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -10,30 +10,23 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MapTransition extends JPanel {
     Font newFont = new Font(Font.SANS_SERIF, Font.BOLD, 50);
     AtomicReference<Integer> cycles = new AtomicReference<>(0);
-    public MapTransition(JPanel nextPanel) {
+    public MapTransition(GamePanel nextPanel) {
         setPreferredSize(new Dimension(500, 500));
         setBackground(Color.black);
         Timer timer = new Timer(200, e -> {
-            if (cycles.get() < 50) {
+            if (cycles.get() < 25) {
                 cycles.getAndUpdate(n -> n + 1);
                 repaint();
             } else {
                 ((Timer) e.getSource()).stop();
+                nextPanel.gameState= GameState.PLAYING;
                 SceneManager.switchTo(nextPanel);
+                nextPanel.requestFocusInWindow();
             }
         });
         timer.start();
 
     }
-
-   /* public static void main(String[] args) {
-        JFrame frame = new JFrame("");
-        frame.add(new MapTransition(), BorderLayout.CENTER);
-        frame.setLocationRelativeTo(null);
-        frame.setSize(500, 500);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }*/
 
     @Override
     protected void paintComponent(Graphics g1) {
@@ -45,7 +38,7 @@ public class MapTransition extends JPanel {
         int actualCenterX = (getWidth() - width) / 2;
         int actualCenterY = (getHeight() - height) / 2;
         int[] positionOfDots = {actualCenterY - radius, actualCenterY - radius, actualCenterY - radius};
-        changeY(positionOfDots,5);
+        changeY(positionOfDots);
         g.setStroke(new BasicStroke(6f));
         g.setColor(Color.WHITE);
         g.setFont(newFont);
@@ -56,18 +49,17 @@ public class MapTransition extends JPanel {
         g.fillArc(actualCenterX + width + radius * 2 + offsetX, positionOfDots[1], radius, radius, 0, 360);
         g.setColor(Color.BLUE);
         g.fillArc(actualCenterX + width + radius * 3 + 2 * offsetX, positionOfDots[2], radius, radius, 0, 360);
-
     }
 
-    private void changeY(int[] changeArray, int offSet) {
+    private void changeY(int[] changeArray) {
         if (cycles.get() % 2 == 0) {
-            changeArray[0] -= offSet;
-            changeArray[1] += offSet / 2;
-            changeArray[2] -= offSet;
+            changeArray[0] -= 5;
+            changeArray[1] += 5 / 2;
+            changeArray[2] -= 5;
         } else {
-            changeArray[0] += offSet;
-            changeArray[1] -= offSet / 2;
-            changeArray[2] += offSet;
+            changeArray[0] += 5;
+            changeArray[1] -= 5 / 2;
+            changeArray[2] += 5;
         }
     }
 }

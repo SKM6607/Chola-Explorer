@@ -1,17 +1,13 @@
 package main;
 
-import com.sun.jdi.PrimitiveValue;
 import entitity.Player;
 import enums.GameState;
 import tile.MapsManager;
-import transtitions.MapTransition;
-import transtitions.SceneManager;
-
 import javax.swing.*;
 import java.awt.*;
-
 public class GamePanel extends JPanel implements Runnable {
     static final int scale = 3;
+    private static final int FPS=90;
     //SCREEN OF GAME (RESOLUTION) 12R16C=>4/3 SCALE IN TERMS OF X:Y
     public static final int maximumRows = 12;
     public static final int maximumColumns = 16;
@@ -20,11 +16,12 @@ public class GamePanel extends JPanel implements Runnable {
     public static final int screenWidth = tileSize * maximumColumns;
     public static final int screenHeight = tileSize * maximumRows;
     private final KeyInputHandler keyInputHandler = new KeyInputHandler();
-    private GameState gameState=GameState.PLAYING;
+    public GameState gameState=GameState.PLAYING;
     private Thread gameThread = null;
-    Player player=new Player(this,keyInputHandler);
+    Player player;
     MapsManager mapsManager =new MapsManager(this);
     public GamePanel() {
+        player=new Player(this,keyInputHandler);
         setPreferredSize(new Dimension(screenWidth, screenHeight));
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
@@ -41,11 +38,15 @@ public class GamePanel extends JPanel implements Runnable {
     @Override
     public void run() {
         while (gameThread != null) {
-            player.update();
-              //TODO IMPLEMENT ANIMATION
+            switch (gameState) {
+                case PLAYING -> player.update();
+                case TRANSITION -> {
+                    player.resetButtonClicks();
+                }
+            }
             player.updateMapForPlayer(mapsManager.mapSwap(player));
             repaint();
-            sleep(90);
+            sleep(FPS);
         }
     }
 
@@ -53,11 +54,10 @@ public class GamePanel extends JPanel implements Runnable {
         final int secondInMilliseconds=1000;
         try {
             Thread.sleep(secondInMilliseconds/FPS);
-        }catch (InterruptedException e){
-            e.printStackTrace();
+        }catch (InterruptedException _){
+
         }
     }
-
 
     @Override
     protected void paintComponent( Graphics g1) {

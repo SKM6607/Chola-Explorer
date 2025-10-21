@@ -17,40 +17,52 @@ import java.util.Collection;
 import static collision.CollisionManager.isColliding;
 import static collision.CollisionManager.reAlign;
 
-public class Player extends Entity implements Drawable {
+public non-sealed class Player extends Entity implements Drawable {
     GamePanel gamePanel;
     KeyInputHandler keyInputHandler;
     private ArrayList<Rectangle> collisionRectanglesM1 = null;
     private ArrayList<Rectangle> collisionRectanglesM2 = null;
-    private int currentMapThePlayerIsIn=0;
+    private int currentMapThePlayerIsIn = 0;
+
     public Player(GamePanel gamePanel, KeyInputHandler keyInputHandler) {
         this.gamePanel = gamePanel;
         this.keyInputHandler = keyInputHandler;
+
         setDefaultFields();
     }
 
     public void setDefaultFields() {
-        x = 100;
-        y = 100;
+        x = 200;
+        y = 200;
         speed = 5;
         getPlayerImage();
     }
 
+    public void resetButtonClicks() {
+        keyInputHandler.rightPressed =
+                keyInputHandler.leftPressed =
+                        keyInputHandler.upPressed =
+                                keyInputHandler.downPressed = false;
+    }
+
     public void checkCollisionByMap(Collection<ArrayList<Rectangle>> collisions) {
-        int mover=0;
+        int mover = 0;
         for (ArrayList<Rectangle> collision : collisions) {
-            if (mover==currentMapThePlayerIsIn && collision != null && isColliding(this, collision)) {
+            if (mover == currentMapThePlayerIsIn && collision != null && isColliding(this, collision)) {
                 reAlign(this, collision);
             }
             mover++;
         }
     }
-    public void updateMapForPlayer(int mapN){
-        currentMapThePlayerIsIn=mapN;
+
+    public void updateMapForPlayer(int mapN) {
+        currentMapThePlayerIsIn = mapN;
     }
+
     public void update() {
         checkCollisionByMap(Arrays.asList(collisionRectanglesM2, collisionRectanglesM1));
         if (keyInputHandler.upPressed || keyInputHandler.downPressed || keyInputHandler.rightPressed || keyInputHandler.leftPressed) {
+
             if (keyInputHandler.upPressed) {
                 direction = Direction.UP;
                 y -= speed;
