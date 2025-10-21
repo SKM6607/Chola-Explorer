@@ -1,5 +1,7 @@
 package transtitions;
 
+import main.GamePanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -8,30 +10,30 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MapTransition extends JPanel {
     Font newFont = new Font(Font.SANS_SERIF, Font.BOLD, 50);
     AtomicReference<Integer> cycles = new AtomicReference<>(0);
-
-    public MapTransition() {
+    public MapTransition(JPanel nextPanel) {
         setPreferredSize(new Dimension(500, 500));
         setBackground(Color.black);
         Timer timer = new Timer(200, e -> {
-            if (cycles.get() < 100) {
+            if (cycles.get() < 50) {
                 cycles.getAndUpdate(n -> n + 1);
                 repaint();
             } else {
                 ((Timer) e.getSource()).stop();
+                SceneManager.switchTo(nextPanel);
             }
-
         });
         timer.start();
+
     }
 
-    public static void main(String[] args) {
+   /* public static void main(String[] args) {
         JFrame frame = new JFrame("");
         frame.add(new MapTransition(), BorderLayout.CENTER);
         frame.setLocationRelativeTo(null);
         frame.setSize(500, 500);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
-    }
+    }*/
 
     @Override
     protected void paintComponent(Graphics g1) {

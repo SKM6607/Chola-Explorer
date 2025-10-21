@@ -3,6 +3,8 @@ package tile;
 import entitity.Player;
 import interfaces.Drawable;
 import main.GamePanel;
+import transtitions.MapTransition;
+import transtitions.SceneManager;
 
 import java.awt.*;
 
@@ -33,6 +35,7 @@ public final class MapsManager implements Drawable {
     public int mapSwap(Player player) {
         if (mapNumber == 1) {
             if (player.x < 0 || player.y > GamePanel.screenHeight) {
+                SceneManager.switchTo(new MapTransition(gamePanel));
                 mapNumber = 0;
                 player.x = GamePanel.screenWidth - 100;
                 player.y = GamePanel.screenHeight / 4;
@@ -40,6 +43,7 @@ public final class MapsManager implements Drawable {
         }
         if (mapNumber == 0) {
             if (player.x > GamePanel.screenWidth) {
+                SceneManager.switchTo(new MapTransition(gamePanel));
                 mapNumber = 1;
                 player.x = 100;
                 player.y = GamePanel.screenHeight / 4;

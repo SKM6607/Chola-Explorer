@@ -4,6 +4,8 @@ import com.sun.jdi.PrimitiveValue;
 import entitity.Player;
 import enums.GameState;
 import tile.MapsManager;
+import transtitions.MapTransition;
+import transtitions.SceneManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,10 +41,8 @@ public class GamePanel extends JPanel implements Runnable {
     @Override
     public void run() {
         while (gameThread != null) {
-            switch (gameState) {
-                case PLAYING -> player.update();
-                case TRANSITION -> {}//TODO IMPLEMENT ANIMATION
-            }
+            player.update();
+              //TODO IMPLEMENT ANIMATION
             player.updateMapForPlayer(mapsManager.mapSwap(player));
             repaint();
             sleep(90);
