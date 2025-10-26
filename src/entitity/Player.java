@@ -1,8 +1,8 @@
 package entitity;
 
 import interfaces.Drawable;
-import main.GamePanel;
-import main.KeyInputHandler;
+import main.others.GamePanel;
+import main.others.KeyInputHandler;
 import maps.Maps;
 import objects.PlayerObjects;
 
@@ -15,15 +15,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-
-import static collision.CollisionManager.isColliding;
-import static collision.CollisionManager.reAlign;
-
+import static collision.CollisionManager.*;
 public final class Player extends Entity implements Drawable {
     private final PlayerObjects playerObjects;
     GamePanel gamePanel;
     KeyInputHandler keyInputHandler;
-    int i = 0;
     private ArrayList<Rectangle> collisionRectanglesM1 = null;
     private ArrayList<Rectangle> collisionRectanglesM2 = null;
     private int currentMapThePlayerIsIn = 0;
@@ -35,43 +31,25 @@ public final class Player extends Entity implements Drawable {
         setDefaultFields();
     }
 
-    public void setDefaultFields() {
-        x = 200;
-        y = 200;
-        speed = 5;
-        hp = 100;
-        getPlayerImage();
-    }
-
     public void resetButtonClicks() {
         keyInputHandler.rightPressed =
                 keyInputHandler.leftPressed =
                         keyInputHandler.upPressed =
                                 keyInputHandler.downPressed = false;
     }
-
-    public void checkCollisionByMap(Collection<ArrayList<Rectangle>> collisions) {
-        int mover = 0;
-        for (ArrayList<Rectangle> collision : collisions) {
-            if (mover == currentMapThePlayerIsIn && collision != null && isColliding(this, collision)) {
-                reAlign(this, collision);
-            }
-            mover++;
-        }
-    }
-
     public void updateMapForPlayer(int mapN) {
         currentMapThePlayerIsIn = mapN;
     }
-
     public void update() {
         playerObjects.update();
         checkCollisionByMap(Arrays.asList(collisionRectanglesM2, collisionRectanglesM1));
-        boolean anyKeyPressed =
+        boolean movementKeyPressed=
                 keyInputHandler.upPressed ||
                 keyInputHandler.downPressed ||
                 keyInputHandler.rightPressed ||
-                keyInputHandler.leftPressed ||
+                keyInputHandler.leftPressed;
+        boolean anyKeyPressed =
+                movementKeyPressed ||
                 keyInputHandler.pPressed ||
                 keyInputHandler.hPressed;
         if (anyKeyPressed) {
@@ -89,7 +67,7 @@ public final class Player extends Entity implements Drawable {
                 x -= speed;
             }
             else if(keyInputHandler.hPressed){
-                shouldDisplayHeart();
+                shouldDisplayHeart(3);
             }
             spriteCounter++;
             int PLAYER_MOTION = 20;
@@ -97,12 +75,8 @@ public final class Player extends Entity implements Drawable {
                 spriteNum = 1 - spriteNum;
                 spriteCounter = 0;
             }
-
         }
-
-
     }
-
     public void draw(Graphics2D g) {
         BufferedImage image = null;
         if (collisionRectanglesM1 == null || collisionRectanglesM2 == null) {
@@ -118,7 +92,15 @@ public final class Player extends Entity implements Drawable {
         g.drawImage(image, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
         playerObjects.draw(g);
     }
-
+    private void checkCollisionByMap(Collection<ArrayList<Rectangle>> collisions) {
+        int mover = 0;
+        for (ArrayList<Rectangle> collision : collisions) {
+            if (mover == currentMapThePlayerIsIn && collision != null && isColliding(this, collision)) {
+                reAlign(this, collision);
+            }
+            mover++;
+        }
+    }
     private void getPlayerImage() {
         try {
             for (int i = 1; i <= 2; i++) {
@@ -131,13 +113,19 @@ public final class Player extends Entity implements Drawable {
             e.fillInStackTrace();
         }
     }
-
-    private void shouldDisplayHeart() {
+    private void setDefaultFields() {
+        x = 200;
+        y = 200;
+        speed = 5;
+        hp = 100;
+        getPlayerImage();
+    }
+    private void shouldDisplayHeart(int secs) {
         long startTime = System.currentTimeMillis();
         displayHeart = true;
         Timer timer = new Timer(1000, (e) -> {
             long currentTime = System.currentTimeMillis();
-            if (currentTime - startTime == 4000) {
+            if (currentTime - startTime >= secs * 1000L) {
                 displayHeart = false;
                 ((Timer) e.getSource()).stop();
             }

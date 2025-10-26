@@ -2,7 +2,7 @@ package objects;
 
 import entitity.Player;
 import interfaces.Drawable;
-import main.GamePanel;
+import main.others.GamePanel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -43,12 +43,14 @@ public final class PlayerObjects implements Drawable {
 
     @Override
     public void draw(Graphics2D g) {
+
+    }
+    private void drawHeart(Graphics2D g){
         if(player.displayHeart) {
             int xOffset = player.x - preferredHeartSize / 6, yOffset = player.y - 60;
             g.drawImage(playerHeartImage, xOffset, yOffset, preferredHeartSize, preferredHeartSize, null);
         }
     }
-
     private void setHeart(int hp) {
         if (hp <= 100 && hp >= 90) {
             playerHeartImage = heartImages[7];
@@ -66,7 +68,6 @@ public final class PlayerObjects implements Drawable {
             playerHeartImage = heartImages[1];
         } else playerHeartImage = heartImages[0];
     }
-
     private enum Heart {
         ZERO(0),
         TEN(10),

@@ -1,7 +1,7 @@
-package main;
+package main.others;
 
 import entitity.Player;
-import enums.GameState;
+import gameEnums.GameState;
 import tile.MapsManager;
 import javax.swing.*;
 import java.awt.*;

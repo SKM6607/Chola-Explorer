@@ -1,4 +1,4 @@
-package enums;
+package gameEnums;
 
 public enum GameState {
     PLAYING,

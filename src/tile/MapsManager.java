@@ -1,10 +1,9 @@
 package tile;
 
-import entitity.Entity;
 import entitity.Player;
-import enums.GameState;
+import gameEnums.GameState;
 import interfaces.Drawable;
-import main.GamePanel;
+import main.others.GamePanel;
 import transtitions.MapTransition;
 import transtitions.SceneManager;
 

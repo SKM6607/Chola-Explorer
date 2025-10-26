@@ -1,4 +1,5 @@
 package main;
+import main.others.GamePanel;
 import transtitions.SceneManager;
 
 import javax.swing.*;

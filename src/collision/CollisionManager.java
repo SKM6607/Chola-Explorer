@@ -1,7 +1,7 @@
 package collision;
 
 import entitity.Player;
-import main.GamePanel;
+import main.others.GamePanel;
 
 import java.awt.*;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package transtitions;
 
-import enums.GameState;
-import main.GamePanel;
+import gameEnums.GameState;
+import main.others.GamePanel;
 import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicReference;
