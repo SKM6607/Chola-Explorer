@@ -5,17 +5,19 @@ import tile.Tile.TileType;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class TilesUtility {
-    private static final Tile[] tile = new Tile[6];
+public final class TilesUtility {
+    private static final Tile[] tile = new Tile[TileType.values().length];
     private static final int TILE_SIZE = 48;
+    private TilesUtility(){}
 
     static {
-        tileInitializer(Tile.TileType.EARTH);
-        tileInitializer(Tile.TileType.GRASS);
-        tileInitializer(Tile.TileType.SAND);
-        tileInitializer(Tile.TileType.TREE);
-        tileInitializer(Tile.TileType.WALL);
-        tileInitializer(Tile.TileType.WATER);
+        tileInitializer(TileType.EARTH);
+        tileInitializer(TileType.GRASS);
+        tileInitializer(TileType.SAND);
+        tileInitializer(TileType.TREE);
+        tileInitializer(TileType.WALL);
+        tileInitializer(TileType.WATER);
+        tileInitializer(TileType.LAVA);
     }
 
     static private void tileInitializer(TileType tileType) {
@@ -68,6 +70,9 @@ public class TilesUtility {
     public static Rectangle drawEarthBlocks(Graphics2D g, int row, int column, int numberOfRows, int numberOfColumns) {
         return linearDraw(tile[TileType.EARTH.tileNumber].image, g, row, column, numberOfRows, numberOfColumns);
     }
+    public static Rectangle drawLavaBlocks(Graphics2D g, int row, int column, int numberOfRows, int numberOfColumns) {
+        return linearDraw(tile[TileType.LAVA.tileNumber].image, g, row, column, numberOfRows, numberOfColumns);
+    }
 
     public static Rectangle drawSingleGrassBlock(Graphics2D g, int row, int column) {
         return linearDraw(tile[TileType.GRASS.tileNumber].image, g, row, column, 1, 1);
@@ -92,5 +97,7 @@ public class TilesUtility {
     public static Rectangle drawSingleEarthBlock(Graphics2D g, int row, int column) {
         return linearDraw(tile[TileType.EARTH.tileNumber].image, g, row, column, 1, 1);
     }
-    
+    public static Rectangle drawSingleLavaBlock(Graphics2D g, int row, int column) {
+        return linearDraw(tile[TileType.LAVA.tileNumber].image, g, row, column, 1, 1);
+    }
 }

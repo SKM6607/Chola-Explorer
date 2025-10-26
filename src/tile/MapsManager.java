@@ -22,8 +22,7 @@ public final class MapsManager implements Drawable {
     }
 
     @Override
-    public void update() {
-    }
+    public void update() {}
 
     @Override
     public void draw(Graphics2D g) {

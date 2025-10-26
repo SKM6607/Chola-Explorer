@@ -27,6 +27,7 @@ public class Maps {
         collisionAreaMap1.add(drawTreeBlocks(g, MAX_ROWS - 3, 1, 2, MAX_COLUMNS / 2 - 1));
         collisionAreaMap1.add(drawTreeBlocks(g, MAX_ROWS - 4, MAX_COLUMNS / 2 - 3, 1, 3));
         //Water
+        drawLavaBlocks(g,3,1,5,5);
         drawWaterBlocks(g, MAX_ROWS / 2, MAX_COLUMNS / 2, 2, 2);
         //Walkable
         drawGrassBlocks(g, 3, 0, 2, MAX_COLUMNS - 3);

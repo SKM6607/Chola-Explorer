@@ -25,7 +25,6 @@ public class MapTransition extends JPanel {
             }
         });
         timer.start();
-
     }
 
     @Override
